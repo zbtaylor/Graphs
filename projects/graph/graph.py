@@ -77,8 +77,7 @@ class Graph:
         if starting_vertex not in visited:
             visited.add(starting_vertex)
             print(starting_vertex)
-            neighbors = self.get_neighbors(starting_vertex)
-            for neighbor in neighbors:
+            for neighbor in self.get_neighbors(starting_vertex):
                 self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -87,24 +86,26 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        # q = Queue()
-        # visited = set()
-        # path = []
+        q = Queue()
+        visited = set()
+        path = []
+        distance = 0
+        prev = None
 
-        # q.enqueue(starting_vertex)
+        q.enqueue(starting_vertex)
 
-        # while q.size() > 0:
-        #     current_node = q.dequeue()
-        #     if current_node not in visited:
-        #         visited.add(current_node)
-        #         path.append(current_node)
-        #         if current_node != destination_vertex:
-        #             neighbors = self.get_neighbors(current_node)
-        #             for neighbor in neighbors:
-        #                 q.enqueue(neighbor)
-        # return path
-
-        pass
+        while q.size() > 0:
+            current_node = q.dequeue()
+            # add criteria for adding a node or not here
+            # maybe store distance from starting vertex?
+            path.append(current_node)
+            if current_node == destination_vertex:
+                path.append(current_node)
+                return path
+            for neighbor in self.get_neighbors(current_node):
+                if neighbor not in visited:
+                    visited.add(current_node)
+                    q.enqueue(neighbor)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
