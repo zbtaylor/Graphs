@@ -88,24 +88,18 @@ class Graph:
         """
         q = Queue()
         visited = set()
-        path = []
-        distance = 0
-        prev = None
 
-        q.enqueue(starting_vertex)
+        q.enqueue([starting_vertex])
 
         while q.size() > 0:
-            current_node = q.dequeue()
-            # add criteria for adding a node or not here
-            # maybe store distance from starting vertex?
-            path.append(current_node)
-            if current_node == destination_vertex:
-                path.append(current_node)
-                return path
-            for neighbor in self.get_neighbors(current_node):
-                if neighbor not in visited:
-                    visited.add(current_node)
-                    q.enqueue(neighbor)
+            current_path = q.dequeue()
+            last_node = current_path[-1]
+            if last_node not in visited:
+                if last_node == destination_vertex:
+                    return current_path
+                visited.add(last_node)
+                for neighbor in self.get_neighbors(last_node):
+                    q.enqueue(current_path + [neighbor])
 
     def dfs(self, starting_vertex, destination_vertex):
         """
