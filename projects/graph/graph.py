@@ -88,16 +88,22 @@ class Graph:
         """
         q = Queue()
         visited = set()
-
+        # queue a path instead of the vertex alone (key)
         q.enqueue([starting_vertex])
-
+        # while the queue is not empty
         while q.size() > 0:
+            # grab the next path
             current_path = q.dequeue()
+            # pull the last node from the end of the path
             last_node = current_path[-1]
+            # if the node hasn't been visited
             if last_node not in visited:
+                # return the path if we've hit the destination
                 if last_node == destination_vertex:
                     return current_path
+                # otherwise mark it visited
                 visited.add(last_node)
+                # create new paths for each neighbor and enqueue them
                 for neighbor in self.get_neighbors(last_node):
                     q.enqueue(current_path + [neighbor])
 
@@ -124,7 +130,7 @@ class Graph:
                 for neighbor in neighbors:
                     s.push(neighbor)
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=set(), path=[]):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -132,7 +138,27 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        # add the initial vertext to the path
+        if path == []:
+            path.append(starting_vertex)
+        # return the path if we've hit the destination
+        if starting_vertex == destination_vertex:
+            return path
+        # if we haven't visited the vertex
+        if starting_vertex not in visited:
+            # mark vertex as visited
+            visited.add(starting_vertex)
+            # for each neighbor
+            for neighbor in self.get_neighbors(starting_vertex):
+                # append the neighbor to the current path and recursively call this method
+                result = self.dfs_recursive(neighbor, destination_vertex,
+                                            visited, path + [neighbor])
+                # eventually the next neighbor will be the destination
+                # which will return the full path and end the recursion
+                if result is not None:
+                    return result
+        # return nothing since we haven't hit the destination
+        return None
 
 
 if __name__ == '__main__':
