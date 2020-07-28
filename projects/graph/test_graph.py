@@ -116,9 +116,6 @@ class Test(unittest.TestCase):
         ]
         self.assertIn(self.graph.dfs_recursive(1, 6), dfs)
 
-        result = self.graph.dfs_recursive(1, 6)
-        print(result)
-
 
 if __name__ == '__main__':
     unittest.main()
